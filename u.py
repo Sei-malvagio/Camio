@@ -823,6 +823,7 @@ async def main():
     await bot.start()
     print("╰┈➤ Camio bot is up, made by @CamioDeSolvoid")
     await bot.run_until_disconnected()
+    
 if __name__ == "__main__":
     asyncio.run(main())
-    #run_server()
+    run_server()
