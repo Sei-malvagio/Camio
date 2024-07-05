@@ -819,11 +819,10 @@ def run_server():
     print("HTTP server is running on port 8000")
     httpd.serve_forever()
 
-def run_camio_bot():
+async def main():
+    await bot.start()
     print("╰┈➤ Camio bot is up, made by @CamioDeSolvoid")
-    bot.run_until_disconnected()
-
+    await bot.run_until_disconnected()
 if __name__ == "__main__":
-    bot_thread = Thread(target=run_camio_bot)
-    bot_thread.start()
-    run_server()
+    asyncio.run(main())
+    #run_server()
