@@ -3,6 +3,9 @@ from telethon.tl.functions.messages import EditMessageRequest
 from telethon.tl.functions.channels import EditAdminRequest
 from telethon.sessions import StringSession
 from telethon.errors.rpcerrorlist import SlowModeWaitError, SessionPasswordNeededError, PhoneCodeInvalidError, PhoneNumberInvalidError
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from threading import Thread
+
 import asyncio
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -16,7 +19,7 @@ api_id = '29570920'
 api_hash = '5efa8ac412d20dc22f0144159ed106c5'
 bot_token = "7494338159:AAFnvGqTCKk6A3-k5LVA4tG-hupA6RQ9MYs"
 
-bot = TelegramClient('bot', api_id, api_hash)
+bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 # Cooldown untuk mengirim pesan
 message_cooldown = defaultdict(datetime)
@@ -810,7 +813,17 @@ async def edit_group_name(event):
     except Exception as e:
         await event.respond(f"Failed to edit group name: {e}")
 
-if __name__ == "__main__":
-    bot.start(bot_token=bot_token)
+def run_server():
+    handler = SimpleHTTPRequestHandler
+    httpd = HTTPServer(('0.0.0.0', 8000), handler)
+    print("HTTP server is running on port 8000")
+    httpd.serve_forever()
+
+def run_camio_bot():
     print("╰┈➤ Camio bot is up, made by @CamioDeSolvoid")
     bot.run_until_disconnected()
+
+if __name__ == "__main__":
+    bot_thread = Thread(target=run_camio_bot)
+    bot_thread.start()
+    run_server()
